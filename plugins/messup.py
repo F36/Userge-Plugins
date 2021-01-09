@@ -22,6 +22,7 @@ async def messup(message: Message):
    await message.client.send_sticker(message.chat.id, "tgs.tgs")
    os.remove("json.json")
    os.remove("tgs.tgs")
+   message.delete()
    
    
    
