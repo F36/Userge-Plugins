@@ -26,7 +26,7 @@ async def glitch_(message: Message):
         and (replied.photo or replied.sticker or replied.video or replied.animation)
     ):
         await message.edit("```Media not found...```")
-        await message.reply_sticker("CAADBQADVAUAAjZgsCGE7PH3Wt1wSRYE")
+        await message.reply_sticker("CAACAgEAAx0ESV2pKgABBW5rX_1pxIkPt3wNUPoAAR66s61qUFmoAAKSBAACgf_vOfHgf8sRC2CuHgQ")
         return
     if message.filtered_input_str:
         if not message.filtered_input_str.isdigit():
