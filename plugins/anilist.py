@@ -32,7 +32,7 @@ ANIME_TEMPLATE = """[{c_flag}]**{romaji}**
 🎭 **GENRES:** `{genre}`
 🎋 **SEASON:** `{season}`
 🔢 **EPISODES:** `{episodes}`
-➤ **DURATION:** `{duration} min/ep`
+🕓 **DURATION:** `{duration} min/ep`
 ➤ **CHARACTERS:** `{chrctrs}`
 📡 **STATUS:** `{status}`
 📺 **NEXT AIRING:** `{air_on}`
