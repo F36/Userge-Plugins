@@ -23,20 +23,23 @@ CLOG = userge.getCLogger(__name__)
 
 # Default templates for Query Formatting
 ANIME_TEMPLATE = """[{c_flag}]**{romaji}**
+        __{english}__
+        {native}
 
 **ID | MAL ID:** `{idm}` | `{idmal}`
-**SOURCE:** `{source}`
-🆎 **TYPE:** `{formats}`
-🎭 **GENRES:** `{genre}`
-🎋 **SEASON:** `{season}`
-🔢 **EPISODES:** `{episodes}`
-📡 **STATUS:** `{status}`
-📺 **NEXT AIRING:** `{air_on}`
-💯 **SCORE:** `{score}/100`
-🔞 **ADULT RATED:** `{adult}`
+➤ **SOURCE:** `{source}`
+➤ **TYPE:** `{formats}`
+➤ **GENRES:** `{genre}`
+➤ **SEASON:** `{season}`
+➤ **EPISODES:** `{episodes}`
+➤ **DURATION:** `{duration} min/ep`
+➤ **CHARACTERS:** `{chrctrs}`
+➤ **STATUS:** `{status}`
+➤ **NEXT AIRING:** `{air_on}`
+➤ **SCORE:** `{score}%` 🌟
+➤ **ADULT RATED:** `{adult}`
 🎬 {trailer_link}
 📖 [Synopsis & More]({synopsis_link})"""
-
 
 SAVED = get_collection("TEMPLATES")
 
@@ -243,7 +246,9 @@ async def anim_arch(message: Message):
     idm = data.get("id")
     idmal = data.get("idMal")
     romaji = data["title"]["romaji"]
-    english = data["title"]["english"]
+    english = (
+        data["title"]["english"] if data["title"]["english"] != None else "--------"
+    )
     native = data["title"]["native"]
     formats = data.get("format")
     status = data.get("status")
@@ -257,6 +262,11 @@ async def anim_arch(message: Message):
     coverImg = data.get("coverImage")["extraLarge"]
     bannerImg = data.get("bannerImage")
     genres = data.get("genres")
+    charlist = []
+    for char in data["characters"]["nodes"]:
+        charlist.append(f"    •{char['name']['full']}")
+    chrctrs = "\n"
+    chrctrs += ("\n").join(charlist[:10])
     genre = genres[0]
     if len(genres) != 1:
         genre = ", ".join(genres)
@@ -265,6 +275,7 @@ async def anim_arch(message: Message):
     if data["nextAiringEpisode"]:
         nextAir = data["nextAiringEpisode"]["airingAt"]
         air_on = make_it_rw(nextAir)
+        air_on += f" | {data['nextAiringEpisode']['episode']}th eps"
     s_date = data.get("startDate")
     adult = data.get("isAdult")
     trailer_link = "N/A"
@@ -324,7 +335,10 @@ async def anim_arch(message: Message):
         finals_ = f"[\u200b]({title_img}) {finals_}"
         await message.edit(finals_)
         return
-    await message.reply_photo(title_img, caption=finals_)
+    if len(finals_) <= 1023:
+        await message.reply_photo(title_img, caption=finals_)
+    else:
+        await message.reply(finals_)
     await message.delete()
 
 
@@ -477,7 +491,11 @@ async def character_search(message: Message):
     site_url = data["siteUrl"]
     description = data["description"]
     featured = data["media"]["nodes"]
-
+    snin = "\n"
+    for ani in featured:
+        k = ani["title"]["english"] or ani["title"]["romaji"]
+        kk = ani["type"]
+        snin += f"    • {k} <code>[{kk}]</code> \n"
     sp = 0
     cntnt = ""
     for cf in featured:
@@ -510,11 +528,16 @@ async def character_search(message: Message):
     cap_text = f"""[🇯🇵] __{native}__
     (`{name}`)
 **ID:** {id_}
-[About Character]({url_})
 
+**Featured in:** __{snin}__
+
+[About Character]({url_})
 [Visit Website]({site_url})"""
 
-    await message.reply_photo(img, caption=cap_text)
+    if len(cap_text) <= 1023:
+        await message.reply_photo(img, caption=cap_text)
+    else:
+        await message.reply(cap_text)
     await message.delete()
 
 
