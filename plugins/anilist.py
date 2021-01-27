@@ -27,17 +27,17 @@ ANIME_TEMPLATE = """[{c_flag}]**{romaji}**
         {native}
 
 **ID | MAL ID:** `{idm}` | `{idmal}`
-➤ **SOURCE:** `{source}`
-➤ **TYPE:** `{formats}`
-➤ **GENRES:** `{genre}`
-➤ **SEASON:** `{season}`
-➤ **EPISODES:** `{episodes}`
+**SOURCE:** `{source}`
+🆎 **TYPE:** `{formats}`
+🎭 **GENRES:** `{genre}`
+🎋 **SEASON:** `{season}`
+🔢 **EPISODES:** `{episodes}`
 ➤ **DURATION:** `{duration} min/ep`
 ➤ **CHARACTERS:** `{chrctrs}`
-➤ **STATUS:** `{status}`
-➤ **NEXT AIRING:** `{air_on}`
-➤ **SCORE:** `{score}%` 🌟
-➤ **ADULT RATED:** `{adult}`
+📡 **STATUS:** `{status}`
+📺 **NEXT AIRING:** `{air_on}`
+💯 **SCORE:** `{score}/100`
+🔞 **ADULT RATED:** `{adult}`
 🎬 {trailer_link}
 📖 [Synopsis & More]({synopsis_link})"""
 
